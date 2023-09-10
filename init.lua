@@ -136,7 +136,16 @@ require('lazy').setup({
     'navarasu/onedark.nvim',
     priority = 1000,
     config = function()
-      vim.cmd.colorscheme 'onedark'
+      require('onedark').setup {
+        -- Main options --
+        -- style = 'darker', -- Default theme style. Choose between 'dark', 'darker', 'cool', 'deep', 'warm', 'warmer' and 'light'
+        -- Custom Highlights --
+        colors = {
+          black = "#000000",
+          bg0 = "#191919",
+        },
+      }
+      require('onedark').load()
     end,
   },
 
@@ -197,7 +206,15 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
-
+  {
+    "baliestri/aura-theme",
+    lazy = false,
+    priority = 1000,
+    config = function(plugin)
+      vim.opt.rtp:append(plugin.dir .. "/packages/neovim")
+      -- vim.cmd([[colorscheme aura-dark]])
+    end
+  }
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -222,6 +239,9 @@ vim.o.hlsearch = false
 
 -- Make line numbers default
 vim.wo.number = true
+
+-- Set lines above/below on scroll
+vim.o.scrolloff = 15
 
 -- Enable mouse mode
 vim.o.mouse = 'a'
