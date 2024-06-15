@@ -1,14 +1,15 @@
 # If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$PATH
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
+export ZSH=$HOME/.oh-my-zsh
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="gentoo"
+ZSH_THEME="robbyrussell"
+#ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -70,7 +71,7 @@ ZSH_THEME="gentoo"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git kubectl poetry golang)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -99,3 +100,20 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+#alias mc="mc -X"
+alias mc="source /usr/lib/mc/mc-wrapper.sh"
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '~/.local/share/google-cloud-sdk/path.zsh.inc' ]; then . /home/richardc/.local/share/google-cloud-sdk/path.zsh.inc; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '~/.local/share/google-cloud-sdk/completion.zsh.inc' ]; then . /home/richardc/.local/share/google-cloud-sdk/completion.zsh.inc; fi
+
+export PATH=~/.local/bin:$PATH
+export PIPENV_VENV_IN_PROJECT=1
+[ -f "~/.acme.sh/acme.sh.env" ] && . ~/.acme.sh/acme.sh.env
+eval "$(direnv hook zsh)"
+eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/atomic.yaml)"
+eval "$(zoxide init zsh)"
+
+setopt HIST_IGNORE_SPACE
