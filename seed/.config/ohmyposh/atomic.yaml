@@ -14,7 +14,7 @@ blocks:
     foreground: "#ffffff"
     background: "#0077c2"
     leading_diamond: ╭─
-    template: "\uf120 {{ .UserName }} "
+    template: "\uf120 {{ .UserName }}@{{ .HostName }} "
   - type: root
     style: diamond
     foreground: "#FFFB38"
