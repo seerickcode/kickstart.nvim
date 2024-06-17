@@ -1,21 +1,15 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
+export PATH=$HOME/bin:/usr/local/bin:$PATH
 export ZSH=$HOME/.oh-my-zsh
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 ZSH_THEME="robbyrussell"
-#ZSH_THEME="powerlevel10k/powerlevel10k"
 
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
+DISABLE_MAGIC_FUNCTIONS="true"
+
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+if [ -f ~/.local/bin/nvim ]; then
+  alias vim="~/.local/bin/nvim"
+fi
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -61,7 +55,8 @@ ZSH_THEME="robbyrussell"
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="yyyy-mm-dd"
+setopt histignorespace
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -71,7 +66,7 @@ ZSH_THEME="robbyrussell"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git kubectl poetry golang)
+plugins=(git kubectl poetry golang fzf)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -80,28 +75,18 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
+if [[ -n $SSH_CONNECTION ]]; then
+  export EDITOR='vim'
+else
+  export EDITOR='mvim'
+fi
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-#alias mc="mc -X"
-alias mc="source /usr/lib/mc/mc-wrapper.sh"
+# Setup MC start alias if script present
+[ -f '/usr/lib/mc/mc-wrapper.sh' ] && alias mc='. /usr/lib/mc/mc-wrapper.sh'
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '~/.local/share/google-cloud-sdk/path.zsh.inc' ]; then . /home/richardc/.local/share/google-cloud-sdk/path.zsh.inc; fi
@@ -109,11 +94,23 @@ if [ -f '~/.local/share/google-cloud-sdk/path.zsh.inc' ]; then . /home/richardc/
 # The next line enables shell command completion for gcloud.
 if [ -f '~/.local/share/google-cloud-sdk/completion.zsh.inc' ]; then . /home/richardc/.local/share/google-cloud-sdk/completion.zsh.inc; fi
 
-export PATH=~/.local/bin:$PATH
 export PIPENV_VENV_IN_PROJECT=1
+export MANPAGER='less -s -X -F'
+export LESS='-R -s -X -F'
+export PIPENV_VENV_IN_PROJECT=true
 [ -f "~/.acme.sh/acme.sh.env" ] && . ~/.acme.sh/acme.sh.env
 eval "$(direnv hook zsh)"
 eval "$(oh-my-posh init zsh --config ~/.config/ohmyposh/atomic.yaml)"
 eval "$(zoxide init zsh)"
+if [ -d $HOME/.cargo/bin ]; then
+export PATH="$HOME/.cargo/bin:$PATH"
+fi
 
-setopt HIST_IGNORE_SPACE
+if command -v fly &> /dev/null
+then
+  source <(fly completion --shell zsh)
+fi
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
